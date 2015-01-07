@@ -183,7 +183,7 @@ public class DeployUtil {
     }
 
     private static void execHiveCommand(String hql) throws IOException {
-        String hiveCmd = "hive -e \"" + hql + "\"";
+        String hiveCmd = "/usr/lib/hive_scripts/hivecli.py 27103 -e \"" + hql + "\"";
         config().getCliCommandExecutor().execute(hiveCmd);
     }
 

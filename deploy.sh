@@ -102,12 +102,12 @@ echo "retrieving classpath..."
 cd $KYLIN_HOME/job/target
 JOB_JAR_NAME="kylin-job-latest.jar"
 #generate config variables
-hbase org.apache.hadoop.util.RunJar $JOB_JAR_NAME com.kylinolap.job.deployment.HbaseConfigPrinter /tmp/kylin_retrieve.sh
+/usr/lib/hbase/bin/hbase org.apache.hadoop.util.RunJar $JOB_JAR_NAME com.kylinolap.job.deployment.HbaseConfigPrinter /tmp/kylin_retrieve.sh
 #load config variables
 source /tmp/kylin_retrieve.sh
 
 cd $KYLIN_HOME
-mkdir -p /etc/kylin
+sudo mkdir -p /etc/kylin
 
 HOSTNAME=`hostname`
 CLI_HOSTNAME_DEFAULT="kylin.job.remote.cli.hostname=sandbox.hortonworks.com"
@@ -136,8 +136,9 @@ cat examples/test_case_data/sandbox/kylin.properties | \
     sed -e "s,${CLI_HOSTNAME_DEFAULT},${NEW_CLI_HOSTNAME_PREFIX}${HOSTNAME}," | \
     sed -e "s,${CLI_PASSWORD_DEFAULT},${NEW_CLI_PASSWORD_PREFIX}${ROOTPASS}," | \
     sed -e "s,${METADATA_URL_DEFAULT},${NEW_METADATA_URL_PREFIX}${KYLIN_ZOOKEEPER_URL}," | \
-    sed -e "s,${STORAGE_URL_DEFAULT},${NEW_STORAGE_URL_PREFIX}${KYLIN_ZOOKEEPER_URL}," >  /etc/kylin/kylin.properties
+    sed -e "s,${STORAGE_URL_DEFAULT},${NEW_STORAGE_URL_PREFIX}${KYLIN_ZOOKEEPER_URL}," >  /tmp/kylin.properties
 
+sudo mv /tmp/kylin.properties /etc/kylin/
 
 echo "a copy of kylin config is generated at /etc/kylin/kylin.properties:"
 echo "==================================================================="
